@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All Users</title>
+</head>
+<body>
+<form action="/users/new">
+    <input type="submit" value="Add USER">
+</form>
+
+
+<div th:each="user : ${users}">
+    <a th:href="@{/users/edit/{id}(id=${user.getId()})}"
+       th:text="${user.getName() + ', ' + user.getLastName() + ', ' +  user.getEmail()}">user</a>
+    <form th:method="delete" th:action="@{/users/delete/{id}(id=${user.getId()})}">
+        <input type="submit" value="Delete">
+    </form>
+</div>
+
+</body>
+</html>
