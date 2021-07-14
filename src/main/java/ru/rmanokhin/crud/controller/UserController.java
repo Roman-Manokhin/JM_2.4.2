@@ -45,7 +45,7 @@ public class UserController {
     @GetMapping(value = "/edit/{id}")
     public String editUser(@PathVariable("id") long id, Model model) {
         model.addAttribute("user", userService.getUserById(id));
-        return "edit";
+        return "update";
     }
 
     @DeleteMapping(value = "/delete/{id}")
