@@ -65,23 +65,5 @@ public class InitDBUsers {
         userSecurityService.addUser(userUser2);
         userSecurityService.addUser(userAdmin);
 
-
-//        Role adminRole = new Role("ADMIN_ROLE");
-//        roleService.addRole(adminRole);
-//        Set<Role> roleAdmin = new HashSet<>();
-//        roleAdmin.add(adminRole);
-//        UserSecurity userSecurity = new UserSecurity("ADMIN", "ADMIN");
-//        userSecurity.setRoles(roleAdmin);
-//
-//
-//        Role userRole = new Role("USER_ROLE");
-//        roleService.addRole(userRole);
-//        Set<Role> roleUser = new HashSet<>();
-//        roleUser.add(userRole);
-//        UserSecurity userSecurityUser = new UserSecurity("USER", "USER");
-//        userSecurity.setRoles(roleUser);
-//
-//        userSecurityService.addUser(userSecurity);
-//        userSecurityService.addUser(userSecurityUser);
     }
 }
