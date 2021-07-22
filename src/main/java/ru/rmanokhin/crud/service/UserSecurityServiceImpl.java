@@ -59,6 +59,9 @@ public class UserSecurityServiceImpl implements UserSecurityService{
     @Override
     @Transactional
     public void updateUser(UserSecurity userSecurity) {
+        if (!userSecurity.getUserPassword().equals(getUserById(userSecurity.getId()).getUserPassword())) {
+            userSecurity.setUserPassword(getPasswordEncoder().encode(userSecurity.getUserPassword()));
+        }
         userSecurityDAO.updateUser(userSecurity);
     }
 }
