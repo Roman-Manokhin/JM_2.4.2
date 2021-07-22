@@ -21,7 +21,7 @@ import java.util.Properties;
 @PropertySource("classpath:db.properties")
 @EnableTransactionManagement
 @ComponentScan("ru.rmanokhin.crud")
-public class AppConfig {
+public class DBConfig {
 
     private Environment env;
 
@@ -45,7 +45,7 @@ public class AppConfig {
 
         LocalContainerEntityManagerFactoryBean entityManager = new LocalContainerEntityManagerFactoryBean();
         entityManager.setDataSource(getDataSource());
-        entityManager.setPackagesToScan("ru.rmanokhin.crud.entity");
+        entityManager.setPackagesToScan("ru.rmanokhin.crud.model");
         entityManager.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 
         Properties properties = new Properties();

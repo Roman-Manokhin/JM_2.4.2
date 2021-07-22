@@ -1,18 +1,20 @@
-package ru.rmanokhin.crud.entity;
+package ru.rmanokhin.crud.model;
 
 import lombok.*;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @RequiredArgsConstructor
-@Table(name = "users")
-public class User {
+@Table(name = "user_info")
+public class UserInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_info_id")
     private Long id;
 
     @NonNull
@@ -26,6 +28,10 @@ public class User {
     @NonNull
     @Column(name = "email")
     private String email;
+
+
+
+
 
 
 }

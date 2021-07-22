@@ -1,57 +1,94 @@
 package ru.rmanokhin.crud.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.rmanokhin.crud.entity.User;
-import ru.rmanokhin.crud.service.UserService;
+import ru.rmanokhin.crud.model.Role;
+import ru.rmanokhin.crud.model.UserInfo;
+import ru.rmanokhin.crud.model.UserSecurity;
+import ru.rmanokhin.crud.service.RoleService;
+import ru.rmanokhin.crud.service.UserSecurityService;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Controller
-@RequestMapping(value = "/users")
 public class UserController {
 
-    private UserService userService;
+    private final UserSecurityService userSecurityService;
+    private final RoleService roleService;
 
     @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
+    public UserController(UserSecurityService userSecurityService, RoleService roleService) {
+        this.roleService = roleService;
+        this.userSecurityService = userSecurityService;
     }
 
-    @GetMapping()
+    @GetMapping(value = "/")
+    public String get() {
+        return "start";
+    }
+
+    @GetMapping(value = "/user")
+    public String getUserInfo(@AuthenticationPrincipal UserSecurity user, Model model) {
+        model.addAttribute("user", user);
+        model.addAttribute("roles", user.getRoles());
+        return "user_info";
+    }
+
+    @GetMapping(value = "/admin")
     public String getAllUsers(Model model) {
-        model.addAttribute("users", userService.getAllUsers());
-        return "users";
+        model.addAttribute("allUsers", userSecurityService.getAllUsers());
+        return "admin_info";
     }
 
-    @GetMapping(value = "/new")
-    public String newUser(Model model) {
-        model.addAttribute("user", new User());
-        return "new";
-    }
-
-    @PostMapping()
-    private String addUser(@ModelAttribute User user) {
-        userService.addUser(user);
-        return "redirect:/users";
-    }
-
-    @PutMapping(value = "/{id}")
-    public String updateUser(@ModelAttribute("user") User user) {
-        userService.updateUser(user);
-        return "redirect:/users";
-    }
-
-    @GetMapping(value = "/edit/{id}")
+    @GetMapping(value = "/admin/update/{id}")
     public String editUser(@PathVariable("id") long id, Model model) {
-        model.addAttribute("user", userService.getUserById(id));
+        model.addAttribute("user", userSecurityService.getUserById(id));
+        model.addAttribute("role", roleService.getAllRole());
         return "update";
     }
 
-    @DeleteMapping(value = "/delete/{id}")
+    @DeleteMapping(value = "/remove/{id}")
     public String deleteUser(@PathVariable("id") long id) {
-        userService.deleteUser(id);
-        return "redirect:/users";
+        userSecurityService.deleteUser(id);
+        return "redirect:/admin";
+    }
+
+
+    @GetMapping(value = "/admin/new")
+    public String newUser(Model model) {
+        model.addAttribute("user", new UserSecurity());
+        model.addAttribute("roles", roleService.getAllRole());
+        return "new";
+    }
+
+    @PostMapping(value = "/admin/add")
+    private String addUser(@ModelAttribute UserSecurity user, @ModelAttribute UserInfo userInfo,
+                           @RequestParam(value = "checkBoxRoles") String[] checkBoxes) {
+        Set<Role> roles = new HashSet<>();
+        for (String role : checkBoxes) {
+            roles.add(roleService.getRoleByName(role));
+        }
+        user.setRoles(roles);
+        user.setUserInfo(userInfo);
+        userSecurityService.addUser(user);
+        return "redirect:/admin";
+    }
+
+    @PutMapping(value = "/admin/{id}")
+    public String updateUser(@ModelAttribute UserSecurity user, @ModelAttribute UserInfo userInfo,
+                             @RequestParam(value = "checkBoxRoles") String[] checkBoxRoles) {
+        Set<Role> roles = new HashSet<>();
+        for (String role : checkBoxRoles) {
+            roles.add(roleService.getRoleByName(role));
+        }
+        user.setRoles(roles);
+        user.setUserInfo(userInfo);
+        userSecurityService.updateUser(user);
+        return "redirect:/admin";
     }
 
 }
