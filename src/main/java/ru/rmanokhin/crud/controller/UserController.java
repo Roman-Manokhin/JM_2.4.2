@@ -28,7 +28,7 @@ public class UserController {
 
     @GetMapping(value = "/")
     public String get() {
-        return "start";
+        return "redirect:login";
     }
 
     @GetMapping(value = "/user")
