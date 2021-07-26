@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.rmanokhin.crud.model.Role;
-import ru.rmanokhin.crud.model.UserInfo;
 import ru.rmanokhin.crud.model.UserSecurity;
 import ru.rmanokhin.crud.service.RoleService;
 import ru.rmanokhin.crud.service.UserSecurityService;
@@ -66,27 +65,27 @@ public class UserController {
     }
 
     @PostMapping(value = "/admin/add")
-    private String addUser(@ModelAttribute UserSecurity user, @ModelAttribute UserInfo userInfo,
+    private String addUser(@ModelAttribute UserSecurity user,
                            @RequestParam(value = "checkBoxRoles") String[] checkBoxes) {
         Set<Role> roles = new HashSet<>();
         for (String role : checkBoxes) {
             roles.add(roleService.getRoleByName(role));
         }
         user.setRoles(roles);
-        user.setUserInfo(userInfo);
+//        user.setUserInfo(userInfo);
         userSecurityService.addUser(user);
         return "redirect:/admin";
     }
 
     @PutMapping(value = "/admin/{id}")
-    public String updateUser(@ModelAttribute UserSecurity user, @ModelAttribute UserInfo userInfo,
+    public String updateUser(@ModelAttribute UserSecurity user,
                              @RequestParam(value = "checkBoxRoles") String[] checkBoxRoles) {
         Set<Role> roles = new HashSet<>();
         for (String role : checkBoxRoles) {
             roles.add(roleService.getRoleByName(role));
         }
         user.setRoles(roles);
-        user.setUserInfo(userInfo);
+//        user.setUserInfo(userInfo);
         userSecurityService.updateUser(user);
         return "redirect:/admin";
     }

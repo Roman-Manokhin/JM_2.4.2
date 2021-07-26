@@ -19,10 +19,10 @@
     <th>Delete</th>
   </tr>
   <tr th:each="user : ${allUsers}">
-    <td th:text="${user.getUserInfo().getId()}">id</td>
-    <td th:text="${user.getUserInfo().getName()}">name</td>
-    <td th:text="${user.getUserInfo().getLastName()}">lastname</td>
-    <td th:text="${user.getUserInfo().getEmail()}">email</td>
+    <td th:text="${user.getId()}">id</td>
+    <td th:text="${user.getName()}">name</td>
+    <td th:text="${user.getLastName()}">lastname</td>
+    <td th:text="${user.getEmail()}">email</td>
     <td th:text="${user.getLogin()}">login</td>
     <td>
       <form th:action="@{/admin/update/{id}(id=${user.getId()})}">

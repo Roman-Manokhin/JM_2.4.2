@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 import java.util.Properties;
 
-
 @Configuration
 @PropertySource("classpath:db.properties")
 @EnableTransactionManagement
@@ -52,12 +51,12 @@ public class DBConfig {
         properties.put("hibernate.show_sql", env.getRequiredProperty("hibernate.show_sql"));
         properties.put("hibernate.hbm2ddl.auto", env.getRequiredProperty("hibernate.hbm2ddl.auto"));
         properties.put("hibernate.dialect", env.getRequiredProperty("hibernate.dialect"));
+        properties.put("hibernate.enable_lazy_load_no_trans", env.getRequiredProperty("hibernate.enable_lazy_load_no_trans"));
 
         entityManager.setJpaProperties(properties);
 
         return entityManager;
     }
-
 
     @Bean
     public PlatformTransactionManager transactionManager() {

@@ -14,7 +14,7 @@ public interface UserSecurityDAO {
 
     UserSecurity getUserById(long id);
 
-    void deleteUser(long id);
+    void deleteUserById(long id);
 
     void updateUser(UserSecurity userSecurity);
 

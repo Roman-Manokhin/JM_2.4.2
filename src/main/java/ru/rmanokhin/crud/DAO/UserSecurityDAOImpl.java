@@ -5,6 +5,7 @@ import ru.rmanokhin.crud.model.UserSecurity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 
 @Repository
@@ -15,7 +16,7 @@ public class UserSecurityDAOImpl implements UserSecurityDAO {
 
     @Override
     public UserSecurity getUserByLogin(String login) {
-        return (UserSecurity) entityManager.createQuery("from UserSecurity where login = :login")
+        return (UserSecurity) entityManager.createQuery("FROM UserSecurity where login = :login")
                 .setParameter("login", login).getSingleResult();
     }
 
@@ -26,7 +27,7 @@ public class UserSecurityDAOImpl implements UserSecurityDAO {
 
     @Override
     public List<UserSecurity> getAllUsers() {
-        return entityManager.createQuery("from UserSecurity", UserSecurity.class).getResultList();
+        return entityManager.createQuery("FROM UserSecurity", UserSecurity.class).getResultList();
     }
 
     @Override
@@ -35,8 +36,9 @@ public class UserSecurityDAOImpl implements UserSecurityDAO {
     }
 
     @Override
-    public void deleteUser(long id) {
-        entityManager.remove(getUserById(id));
+    public void deleteUserById(long id) {
+        entityManager.createQuery("DELETE FROM UserSecurity WHERE id = :id")
+                .setParameter("id", id).executeUpdate();
     }
 
     @Override

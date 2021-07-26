@@ -53,7 +53,7 @@ public class UserSecurityServiceImpl implements UserSecurityService{
     @Override
     @Transactional
     public void deleteUser(long id) {
-        userSecurityDAO.deleteUser(id);
+        userSecurityDAO.deleteUserById(id);
     }
 
     @Override

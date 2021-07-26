@@ -6,6 +6,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -31,16 +32,23 @@ public class UserSecurity implements UserDetails {
     @Column(name = "password")
     private String userPassword;
 
-    @ManyToMany(cascade=CascadeType.MERGE, fetch = FetchType.EAGER)
+    @NonNull
+    @Column(name = "name")
+    private String name;
+
+    @NonNull
+    @Column(name = "last_name")
+    private String lastName;
+
+    @NonNull
+    @Column(name = "email")
+    private String email;
+
+    @ManyToMany(cascade=CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_security_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_info_id")
-    private UserInfo userInfo;
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
