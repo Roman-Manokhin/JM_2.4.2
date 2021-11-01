@@ -1,5 +1,6 @@
 package ru.rmanokhin.crud.DAO;
 
+import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 import ru.rmanokhin.crud.model.UserSecurity;
 
@@ -18,6 +19,7 @@ public class UserSecurityDAOImpl implements UserSecurityDAO {
     public UserSecurity getUserByLogin(String login) {
         return (UserSecurity) entityManager.createQuery("FROM UserSecurity where login = :login")
                 .setParameter("login", login).getSingleResult();
+
     }
 
     @Override
@@ -27,7 +29,7 @@ public class UserSecurityDAOImpl implements UserSecurityDAO {
 
     @Override
     public List<UserSecurity> getAllUsers() {
-        return entityManager.createQuery("FROM UserSecurity", UserSecurity.class).getResultList();
+        return entityManager.createQuery("SELECT e FROM UserSecurity e INNER JOIN FETCH e.roles", UserSecurity.class).getResultList();
     }
 
     @Override
